@@ -25,19 +25,22 @@ menu:
       pageRef: /notes
       weight: 2
     - name: Blog
-      url: /blog
+      pageRef: /blog
       weight: 3
-    - name: Search
+    - name: SyncBoard
+      url: "https://github.com/users/codeadeel/projects/7"
       weight: 4
+    - name: Search
+      weight: 5
       params:
         type: search
     - name: GitHub
-      weight: 5
+      weight: 6
       url: "https://github.com/codeadeel"
       params:
         icon: github
     - name: LinkedIn
-      weight: 6
+      weight: 7
       url: "https://www.linkedin.com/in/codeadeel"
       params:
         icon: linkedin
