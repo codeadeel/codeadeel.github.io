@@ -1,0 +1,56 @@
+# Hugo configuration file
+title: codeadeel
+
+# import hextra as module
+module:
+  imports:
+    - path: github.com/imfing/hextra
+
+markup:
+  # allow raw html
+  goldmark:
+    renderer:
+      unsafe: true
+
+  # enable hextra syntax highlight
+  highlight:
+    noClasses: false
+
+menu:
+  main:
+    - name: Engineering
+      pageRef: /engineering
+      weight: 1
+    - name: Notes
+      pageRef: /notes
+      weight: 2
+    - name: Blog
+      url: /blog
+      weight: 3
+    - name: Search
+      weight: 4
+      params:
+        type: search
+    - name: GitHub
+      weight: 5
+      url: "https://github.com/codeadeel"
+      params:
+        icon: github
+    - name: LinkedIn
+      weight: 6
+      url: "https://www.linkedin.com/in/codeadeel"
+      params:
+        icon: linkedin
+
+params:
+  navbar:
+    displayTitle: true
+    displayLogo: false
+
+  footer:
+    displayCopyright: false
+    displayPoweredBy: true
+
+  editURL:
+    enable: true
+    base: "https://github.com/codeadeel/codeadeel.github.io/edit/main/content"
