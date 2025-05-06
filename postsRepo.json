@@ -55,54 +55,54 @@
     ],
     "notes": [
         {
-            "category": "Engineering",
+            "category": "Notes",
             "title": "The Future of Quantum Computing",
             "url": "https://example.com/future-quantum-computing"
         },
         {
-            "category": "Engineering",
+            "category": "Notes",
             "title": "The Rise of Renewable Energy",
             "url": "https://example.com/rise-renewable-energy"
         },
         {
-            "category": "Engineering",
+            "category": "Notes",
             "title": "Artificial Intelligence in Everyday Life",
             "url": "https://example.com/ai-everyday-life"
         },
         {
-            "category": "Engineering",
+            "category": "Notes",
             "title": "Understanding the Internet of Things (IoT)",
             "url": "https://example.com/internet-of-things"
         },
         {
-            "category": "Engineering",
+            "category": "Notes",
             "title": "Blockchain Technology Explained",
             "url": "https://example.com/blockchain-explained"
         }
     ],
     "blog": [
         {
-            "category": "Engineering",
+            "category": "Blog",
             "title": "The Future of Quantum Computing",
             "url": "https://example.com/future-quantum-computing"
         },
         {
-            "category": "Engineering",
+            "category": "Blog",
             "title": "The Rise of Renewable Energy",
             "url": "https://example.com/rise-renewable-energy"
         },
         {
-            "category": "Engineering",
+            "category": "Blog",
             "title": "Artificial Intelligence in Everyday Life",
             "url": "https://example.com/ai-everyday-life"
         },
         {
-            "category": "Engineering",
+            "category": "Blog",
             "title": "Understanding the Internet of Things (IoT)",
             "url": "https://example.com/internet-of-things"
         },
         {
-            "category": "Engineering",
+            "category": "Blog",
             "title": "Blockchain Technology Explained",
             "url": "https://example.com/blockchain-explained"
         }
