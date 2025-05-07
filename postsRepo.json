@@ -2,55 +2,15 @@
     "mainPage": [
         {
             "category": "Engineering",
-            "title": "The Future of Quantum Computing",
-            "url": "https://example.com/future-quantum-computing"
-        },
-        {
-            "category": "Engineering",
-            "title": "The Rise of Renewable Energy",
-            "url": "https://example.com/rise-renewable-energy"
-        },
-        {
-            "category": "Engineering",
-            "title": "Artificial Intelligence in Everyday Life",
-            "url": "https://example.com/ai-everyday-life"
-        },
-        {
-            "category": "Engineering",
-            "title": "Understanding the Internet of Things (IoT)",
-            "url": "https://example.com/internet-of-things"
-        },
-        {
-            "category": "Engineering",
-            "title": "Blockchain Technology Explained",
-            "url": "https://example.com/blockchain-explained"
+            "title": "Integrating React.js with HugoPages: A Comprehensive Guide",
+            "url": "https://codeadeel.github.io/engineering/reactwithhugo"
         }
     ],
     "engineering": [
         {
             "category": "Engineering",
-            "title": "The Future of Quantum Computing",
-            "url": "https://example.com/future-quantum-computing"
-        },
-        {
-            "category": "Engineering",
-            "title": "The Rise of Renewable Energy",
-            "url": "https://example.com/rise-renewable-energy"
-        },
-        {
-            "category": "Engineering",
-            "title": "Artificial Intelligence in Everyday Life",
-            "url": "https://example.com/ai-everyday-life"
-        },
-        {
-            "category": "Engineering",
-            "title": "Understanding the Internet of Things (IoT)",
-            "url": "https://example.com/internet-of-things"
-        },
-        {
-            "category": "Engineering",
-            "title": "Blockchain Technology Explained",
-            "url": "https://example.com/blockchain-explained"
+            "title": "Integrating React.js with HugoPages: A Comprehensive Guide",
+            "url": "https://codeadeel.github.io/engineering/reactwithhugo"
         }
     ],
     "notes": [
@@ -58,26 +18,6 @@
             "category": "Notes",
             "title": "The Future of Quantum Computing",
             "url": "https://example.com/future-quantum-computing"
-        },
-        {
-            "category": "Notes",
-            "title": "The Rise of Renewable Energy",
-            "url": "https://example.com/rise-renewable-energy"
-        },
-        {
-            "category": "Notes",
-            "title": "Artificial Intelligence in Everyday Life",
-            "url": "https://example.com/ai-everyday-life"
-        },
-        {
-            "category": "Notes",
-            "title": "Understanding the Internet of Things (IoT)",
-            "url": "https://example.com/internet-of-things"
-        },
-        {
-            "category": "Notes",
-            "title": "Blockchain Technology Explained",
-            "url": "https://example.com/blockchain-explained"
         }
     ],
     "blog": [
@@ -85,26 +25,6 @@
             "category": "Blog",
             "title": "The Future of Quantum Computing",
             "url": "https://example.com/future-quantum-computing"
-        },
-        {
-            "category": "Blog",
-            "title": "The Rise of Renewable Energy",
-            "url": "https://example.com/rise-renewable-energy"
-        },
-        {
-            "category": "Blog",
-            "title": "Artificial Intelligence in Everyday Life",
-            "url": "https://example.com/ai-everyday-life"
-        },
-        {
-            "category": "Blog",
-            "title": "Understanding the Internet of Things (IoT)",
-            "url": "https://example.com/internet-of-things"
-        },
-        {
-            "category": "Blog",
-            "title": "Blockchain Technology Explained",
-            "url": "https://example.com/blockchain-explained"
         }
     ]
 }
