@@ -2,11 +2,21 @@
     "mainPage": [
         {
             "category": "Engineering",
+            "title": "QR Code Scanner with Camera and Flashlight in React.js",
+            "url": "https://codeadeel.github.io/engineering/qrBrowserFlashCamera.md"
+        },
+        {
+            "category": "Engineering",
             "title": "Integrating React.js with HugoPages",
             "url": "https://codeadeel.github.io/engineering/reactwithhugo"
         }
     ],
     "engineering": [
+        {
+            "category": "Engineering",
+            "title": "QR Code Scanner with Camera and Flashlight in React.js",
+            "url": "https://codeadeel.github.io/engineering/qrBrowserFlashCamera.md"
+        },
         {
             "category": "Engineering",
             "title": "Integrating React.js with HugoPages",
