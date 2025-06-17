@@ -44,6 +44,11 @@ menu:
       url: "https://www.linkedin.com/in/codeadeel"
       params:
         icon: linkedin
+    - name: Google Scholar
+      weight: 8
+      url: "https://scholar.google.com/citations?user=N6JC1yUAAAAJ"
+      params:
+        icon: collection
 
 params:
   navbar:
