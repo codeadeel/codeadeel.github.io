@@ -1,13 +1,13 @@
 ---
 date: 2025-08-19
-title: "Cheatsheet @ Faiss: Efficient Vector Similarity Search"
+title: "Faiss: Efficient Vector Similarity Search"
 ---
 
 ![Banner Art](https://engineering.fb.com/wp-content/uploads/2017/03/GOcmDQEFmV52jukHAAAAAAAqO6pvbj0JAAAB.jpg)
 
 ## Introduction
 
-As vector databases and similarity search become increasingly important in modern machine learning workflows, Faiss stands out as a robust solution for managing large-scale embeddings efficiently. This cheatsheet serves as a concise yet comprehensive reference for practitioners working on recommendation systems, image retrieval, NLP applications, and more. With Faiss, performing fast and scalable vector similarity searches is both practical and accessible.
+As vector databases and similarity search become increasingly important in modern machine learning workflows, Faiss stands out as a robust solution for managing large-scale embeddings efficiently. These notes serves as a concise yet comprehensive reference for practitioners working on recommendation systems, image retrieval, NLP applications, and more. With Faiss, performing fast and scalable vector similarity searches is both practical and accessible.
 
 
 ## What is Faiss?
@@ -195,7 +195,7 @@ print(distances)  # [[distances for query 1], ...]
 **When to use:** Choose IVFPQ when you need to scale to millions or billions of vectors and want to minimize memory usage, accepting some loss in search precision.
 
 
-## Normalization for Cosine Similarity
+## Normalization for Cosine
 
 To perform cosine similarity search with Faiss, you must first normalize your vectors to have unit length. This ensures that the inner product between vectors is equivalent to their cosine similarity. Use the following approach to normalize both your database and query vectors:
 
@@ -229,7 +229,6 @@ After normalization, use an index type that supports inner product search, such 
 
 **Note:** Always normalize your vectors before adding them to the index and before querying, otherwise the results will not represent true cosine similarity.
 
-## Saving and Loading Indexes
 ## Saving and Loading Indexes
 
 To ensure your Faiss index can be reused without retraining or rebuilding, you can persist it to disk and reload it later. This is especially useful for large datasets or production environments where index construction is time-consuming.
@@ -310,7 +309,7 @@ Inspecting these properties helps ensure your index is correctly built, trained,
 
 ## Conclusion
 
-Faiss is a robust library for fast vector similarity search, widely used in recommendation systems, information retrieval, and large-scale ML. By mastering its core concepts, index types, and best practices, you can efficiently manage datasets of any size. Whether you need exact or approximate search, CPU or GPU support, or memory-efficient compression, Faiss offers flexible solutions. Use this cheatsheet as a handy reference for building and optimizing your vector search workflows.
+Faiss is a robust library for fast vector similarity search, widely used in recommendation systems, information retrieval, and large-scale ML. By mastering its core concepts, index types, and best practices, you can efficiently manage datasets of any size. Whether you need exact or approximate search, CPU or GPU support, or memory-efficient compression, Faiss offers flexible solutions.
 
 ## References
 - [Faiss Official Documentation](https://faiss.ai/index.html)
