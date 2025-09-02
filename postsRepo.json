@@ -19,6 +19,11 @@
             "category": "Notes",
             "title": "Cheatsheet @ Chroma",
             "url": "https://codeadeel.github.io/notes/cheatsheetchroma"
+        },
+        {
+            "category": "Blog",
+            "title": "Remote Desktop @ GCP",
+            "url": "https://codeadeel.github.io/blog/remotedesktopgcp"
         }
     ],
     "engineering": [
@@ -48,8 +53,8 @@
     "blog": [
         {
             "category": "Blog",
-            "title": "The Future of Quantum Computing",
-            "url": "https://example.com/future-quantum-computing"
+            "title": "Remote Desktop @ GCP",
+            "url": "https://codeadeel.github.io/blog/remotedesktopgcp"
         }
     ]
 }
