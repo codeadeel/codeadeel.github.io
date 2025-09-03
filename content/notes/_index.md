@@ -6,7 +6,9 @@ title: 'Notes'
 
 In this space, I keep short, practical notes on small technical experiments and tasks I’ve tackled. These are quick reminders of how I approached specific components or solved particular problems within bigger systems. Whether it’s a handy code snippet, a setup tweak, or a testing trick, each note is a fast reference to jog my memory on the steps I took. By keeping them brief and focused, I can easily revisit and reuse these ideas whenever I need them down the line.
 
-![Pages Build & Deploy](https://github.com/codeadeel/codeadeel.github.io/actions/workflows/pagesDeployment.yaml/badge.svg?event=push)
+<div align="left">
+  ![Pages Build & Deploy](https://github.com/codeadeel/codeadeel.github.io/actions/workflows/pagesDeployment.yaml/badge.svg?event=push)
+</div>
 
 ## What's New !!!
 
