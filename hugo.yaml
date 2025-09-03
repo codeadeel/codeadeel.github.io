@@ -50,9 +50,6 @@ menu:
       params:
         icon: collection
 
-# Parse Git commit
-enableGitInfo: true
-
 params:
   navbar:
     displayTitle: true
@@ -74,7 +71,3 @@ params:
   page:
     # full (100%), wide (90rem), normal (1280px)
     width: wide
-  
-  dateFormat:
-    displayUpdatedDate: true
-    dateFormat: "2006-10-25"
