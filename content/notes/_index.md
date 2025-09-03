@@ -1,5 +1,5 @@
 ---
-date: '2025-05-05T15:00:53+03:00'
+date: '2025-05-05'
 title: 'Notes'
 ---
 ![Notes Section](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/notesMainBanner.jpg)

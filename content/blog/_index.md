@@ -1,5 +1,5 @@
 ---
-date: '2025-05-05T15:00:57+03:00'
+date: '2025-05-05'
 title: 'Blog'
 # cascade:
 #   type: docs

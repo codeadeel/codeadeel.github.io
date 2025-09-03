@@ -77,4 +77,4 @@ params:
   
   dateFormat:
     displayUpdatedDate: true
-    dateFormat: "January 2, 2006"
+    dateFormat: "2006-10-25"

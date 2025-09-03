@@ -1,5 +1,5 @@
 ---
-date: '2025-05-07T10:58:03+03:00'
+date: '2025-05-07'
 title: 'Integrating React.js with HugoPages: A Comprehensive Guide'
 ---
 

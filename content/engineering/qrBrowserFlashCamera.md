@@ -1,5 +1,5 @@
 ---
-date: '2025-05-12T10:53:22+03:00'
+date: '2025-05-12'
 title: 'Building a QR Code Scanner with Browser Camera and Flashlight Support Using React.js'
 ---
 

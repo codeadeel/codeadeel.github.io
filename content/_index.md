@@ -1,5 +1,5 @@
 ---
-date: '2025-05-05T15:00:16+03:00'
+date: '2025-05-05'
 title: "Hi 👋, I'm Adeel"
 ---
 <h3 align="center">Machine Learning Engineer</h3>
