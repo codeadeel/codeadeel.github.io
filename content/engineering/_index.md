@@ -5,7 +5,7 @@ title: 'Engineering'
 
 ![Engineering Section](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/engineeringMainBanner.jpg)
 
-<div style="display: flex; justify-content: flex-start; align-items: left;">
+<div style="display: grid; justify-content: start; align-self: start;">
   <img src="https://github.com/codeadeel/codeadeel.github.io/actions/workflows/pagesDeployment.yaml/badge.svg?event=push" alt="Pages Build & Deploy">
 </div>
 
