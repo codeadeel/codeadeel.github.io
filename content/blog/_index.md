@@ -6,7 +6,7 @@ title: 'Blog'
 ---
 ![Blog Section](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/blogMainBanner.jpg)
 
-<div style="display: flex; justify-content: left; align-items: left;">
+<div style="display: flex; justify-content: flex-start; align-items: left;">
   <img src="https://github.com/codeadeel/codeadeel.github.io/actions/workflows/pagesDeployment.yaml/badge.svg?event=push" alt="Pages Build & Deploy">
 </div>
 
