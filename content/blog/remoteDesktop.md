@@ -1,7 +1,6 @@
 ---
 date: 2025-09-03
 title: "Remote Desktop on Google Cloud Platform"
-sidebar: false
 breadcrumbs: false
 ---
 
