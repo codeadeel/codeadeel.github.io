@@ -2,6 +2,11 @@
     "mainPage": [
         {
             "category": "Engineering",
+            "title": "Picasso MCP — Image Generation for AI",
+            "url": "https://codeadeel.github.io/engineering/picassomcpserver"
+        },
+        {
+            "category": "Engineering",
             "title": "Integrating React.js with HugoPages",
             "url": "https://codeadeel.github.io/engineering/reactwithhugo"
         },
@@ -19,14 +24,14 @@
             "category": "Blog",
             "title": "Remote Desktop @ GCP",
             "url": "https://codeadeel.github.io/blog/remotedesktop"
-        },
-        {
-            "category": "Notes",
-            "title": "Tutorial @ FastAPI",
-            "url": "https://codeadeel.github.io/notes/tutorialfastapi"
         }
     ],
     "engineering": [
+        {
+            "category": "Engineering",
+            "title": "Picasso MCP — Image Generation for AI",
+            "url": "https://codeadeel.github.io/engineering/picassomcpserver"
+        },
         {
             "category": "Engineering",
             "title": "QR Code Scanner with Camera and Flashlight in React.js",
