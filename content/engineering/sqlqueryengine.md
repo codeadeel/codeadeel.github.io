@@ -11,8 +11,6 @@ tags: [fastapi, llm, postgresql, redis, docker, openai, natural-language, sql, o
 
 > Point it at a database. Ask questions in plain English. Get back SQL results.
 
----
-
 ## The Problem
 
 You have a PostgreSQL database full of data, and stakeholders who need answers — fast. They don't write SQL. They shouldn't have to. But every text-to-SQL tool you've tried either chokes on schema complexity, generates broken queries with no recovery, or needs you to adopt someone else's entire platform.
@@ -75,9 +73,9 @@ sequenceDiagram
     API-->>Client: 200 JSON
 ```
 
-- **Stage 1 — SQL Generation** — On the first request for a session, the engine introspects the database schema from PostgreSQL, samples rows from every table, and asks the LLM to produce a detailed schema description. This context is cached in Redis per `chatID`, so subsequent questions skip introspection entirely. The LLM then generates a SQL query using structured output (Pydantic schema enforcement via LangChain).
+- **Stage 1 — SQL Generation** — On the first request for a session, the engine introspects the database schema from PostgreSQL, samples rows from every table, and asks the LLM to produce a detailed schema description. This context is cached in Redis per `chatID`, so subsequent questions skip introspection entirely. The LLM then generates a SQL query, which is extracted via a multi-strategy response parser — a 5-strategy cascade (JSON → embedded JSON → code blocks → regex → raw text) that works with any model, no structured output or function calling required.
 
-- **Stage 2 — SQL Evaluation & Repair** — The generated query is executed against PostgreSQL. If it fails — syntax errors, schema mismatches, empty results — the engine captures the full error output (SQLSTATE codes, PostgreSQL diagnostics, tracebacks) and feeds it back to the LLM along with the schema context. The LLM returns a structured fix. This loop repeats until the query succeeds or the retry limit is reached. Every step publishes real-time progress to a Redis Pub/Sub channel.
+- **Stage 2 — SQL Evaluation & Repair** — The generated query is executed against PostgreSQL. If it succeeds and returns rows, the result is **accepted immediately** — no LLM re-evaluation, no risk of regression. If it fails — syntax errors, schema mismatches, empty results — the engine captures the full error output (SQLSTATE codes, PostgreSQL diagnostics, tracebacks) and feeds it back to the LLM along with the schema context. The LLM returns a fix, extracted via the same multi-strategy parser. This loop repeats until the query succeeds or the retry limit is reached. The engine tracks the **best result seen** across all attempts, so if retries exhaust without a perfect fix, it returns the best partial result rather than nothing. Every step publishes real-time progress to a Redis Pub/Sub channel.
 
 ## The Self-Healing Loop
 
@@ -86,16 +84,19 @@ This is the key differentiator. When a query goes wrong, the engine doesn't give
 ```mermaid
 flowchart TD
     A[Execute SQL Query] --> B{Success?}
-    B -->|Yes + Rows| C[✅ Return Results]
-    B -->|No or Empty| D[Capture Error Details<br>SQLSTATE · Diagnostics · Traceback]
-    D --> E[Feed Error + Schema to LLM]
-    E --> F[LLM Returns Fix<br>isValid · observation · fixedQuery]
-    F --> G{Retry Limit?}
-    G -->|No| A
-    G -->|Yes| H[⚠️ Return Failure]
+    B -->|Yes + Rows| C[✅ Early-Accept · Return Results]
+    B -->|No or Empty| D[Track Best Result So Far]
+    D --> E[Capture Error Details<br>SQLSTATE · Diagnostics · Traceback]
+    E --> F[Feed Error + Schema to LLM]
+    F --> G[LLM Returns Fix<br>observation · fixedQuery]
+    G --> H{Retry Limit?}
+    H -->|No| A
+    H -->|Yes| I[⚠️ Return Best Result Seen]
 ```
 
-The evaluator captures PostgreSQL errors at the `psycopg` level — including SQLSTATE codes, diagnostic messages, and hints — and feeds the full context back to the LLM through a structured evaluation schema. If the query is valid but returns empty results, the loop continues — because an empty result on a reasonable question usually means the query is wrong, not the data. The database connection is set to read-only mode, so the engine can never accidentally modify data.
+Two design choices make this loop safe. First, **early-accept**: if a query executes successfully and returns rows, it's accepted immediately — the LLM is never asked to second-guess a working result, which prevents regressions where the model "fixes" a correct query into a broken one. Second, **best-result tracking**: the engine records the best result seen across all retry iterations, so even if the loop exhausts without a perfect fix, the user gets the closest successful result rather than an empty failure.
+
+The evaluator captures PostgreSQL errors at the `psycopg` level — including SQLSTATE codes, diagnostic messages, and hints — and feeds the full context back to the LLM. The LLM's `isValid` self-assessment is ignored by design; the engine only trusts execution outcomes. If the query returns empty results, the loop continues — because an empty result on a reasonable question usually means the query is wrong, not the data. The database connection is set to read-only mode, so the engine can never accidentally modify data.
 
 ## OpenAI-Compatible API
 
@@ -228,8 +229,42 @@ Each module has a single responsibility. `dbHandler.py` handles PostgreSQL intro
 | Chat UI | OpenWebUI pre-configured in Docker Compose |
 | Deployment | Docker Compose, single command |
 | Module Mode | Import `SQLQueryEngine` directly in Python, no HTTP layer needed |
+| Response Parsing | Multi-strategy cascade (JSON → embedded JSON → code blocks → regex → raw text) — works with any model |
+| Reasoning Models | `<think>` tag stripping for models like Qwen3 and DeepSeek-R1 |
 
----
+## Evaluation & Benchmarks
+
+The repository includes a full evaluation pipeline — a 3-configuration ablation study across 3 synthetic databases (e-commerce, healthcare, university) with 120 gold-standard questions spanning 4 difficulty tiers (basic, intermediate, challenging, complex).
+
+**Three configurations** isolate each pipeline stage:
+
+| Config | retryCount | What It Tests |
+|---|---|---|
+| Config C | 0 | Generation only — no evaluation, no repair |
+| Config B | 1 | Single evaluation + one repair attempt |
+| Config A | 5 | Full pipeline — up to 5 repair iterations |
+
+**Benchmark results** across 5 LLM backends:
+
+| Model | Config C (gen only) | Config A (full pipeline) | Self-Healing Delta | Regressions |
+|---|---|---|---|---|
+| gpt-oss-20b | 48.0% | 50.7% | +2.7pp | 3 |
+| llama-3.3-70b | 52.0% | 54.7% | +2.7pp | 0 |
+| gpt-oss-120b | 50.7% | 49.3% | −1.4pp | 5 |
+| **llama-4-scout-17b** | 48.0% | **58.7%** | **+10.7pp** | **0** |
+| qwen3-32b | 40.0% | 46.7% | +6.7pp | 8 |
+
+**Key finding**: Llama 4 Scout (17B MoE) achieves the highest accuracy (58.7%), the largest self-healing delta (+10.7 percentage points), and zero regressions — meaning the repair loop never degraded a previously correct query. The early-accept and best-result-tracking design choices directly enable the zero-regression property.
+
+Run the evaluation yourself:
+
+```bash
+# Set LLM credentials in docker-compose-evaluation.yml, then:
+docker compose -f docker-compose-evaluation.yml build
+docker compose -f docker-compose-evaluation.yml up -d
+docker logs eval-runner --tail 10 -f
+# Results appear in evaluation/results/
+```
 
 ## Links
 
@@ -238,4 +273,5 @@ Each module has a single responsibility. `dbHandler.py` handles PostgreSQL intro
 - **Wiki — REST API & Python Module**: [usage examples & endpoints](https://github.com/codeadeel/sqlqueryengine/wiki)
 - **Wiki — OpenWebUI Setup**: [connection & configuration](https://github.com/codeadeel/sqlqueryengine/wiki)
 - **Wiki — Environment Variables**: [full reference](https://github.com/codeadeel/sqlqueryengine/wiki)
+- **Wiki — Evaluation**: [benchmark methodology & results](https://github.com/codeadeel/sqlqueryengine/wiki/Evaluation)
 - **License**: MIT
