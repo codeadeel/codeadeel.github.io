@@ -2,6 +2,11 @@
     "mainPage": [
         {
             "category": "Engineering",
+            "title": "SQL Query Engine",
+            "url": "https://codeadeel.github.io/engineering/sqlqueryengine"
+        },
+        {
+            "category": "Engineering",
             "title": "Picasso MCP — Image Generation for AI",
             "url": "https://codeadeel.github.io/engineering/picassomcpserver"
         },
@@ -19,14 +24,14 @@
             "category": "Notes",
             "title": "Cheatsheet @ Chroma",
             "url": "https://codeadeel.github.io/notes/cheatsheetchroma"
-        },
-        {
-            "category": "Blog",
-            "title": "Remote Desktop @ GCP",
-            "url": "https://codeadeel.github.io/blog/remotedesktop"
         }
     ],
     "engineering": [
+        {
+            "category": "Engineering",
+            "title": "SQL Query Engine",
+            "url": "https://codeadeel.github.io/engineering/sqlqueryengine"
+        },
         {
             "category": "Engineering",
             "title": "Picasso MCP — Image Generation for AI",
