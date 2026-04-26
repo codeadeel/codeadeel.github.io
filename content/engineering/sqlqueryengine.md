@@ -247,6 +247,7 @@ docker logs bird-runner --tail 10 -f
 
 ## Links
 - **Paper**: [arXiv:2604.16511](https://arxiv.org/abs/2604.16511) — *SQL Query Engine: A Self-Healing LLM Pipeline for Natural Language to PostgreSQL Translation*
+- **Dataset**: [codeadeel/sql-query-engine-synthetic](https://huggingface.co/datasets/codeadeel/sql-query-engine-synthetic) on Hugging Face — 75 gold-standard questions, evaluation results across 5 models
 - **GitHub**: [codeadeel/sqlqueryengine](https://github.com/codeadeel/sqlqueryengine)
 - **Wiki**: [Full documentation](https://github.com/codeadeel/sqlqueryengine/wiki)
 - **Wiki — REST API & Python Module**: [usage examples & endpoints](https://github.com/codeadeel/sqlqueryengine/wiki/Usage-Guide)
