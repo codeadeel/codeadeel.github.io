@@ -2,6 +2,11 @@
     "mainPage": [
         {
             "category": "Engineering",
+            "title": "HA Milvus on Linux VMs Without Kubernetes",
+            "url": "https://codeadeel.github.io/engineering/milvusonprem"
+        },
+        {
+            "category": "Engineering",
             "title": "SQL Query Engine",
             "url": "https://codeadeel.github.io/engineering/sqlqueryengine"
         },
@@ -19,14 +24,14 @@
             "category": "Notes",
             "title": "Cheatsheet @ Faiss",
             "url": "https://codeadeel.github.io/notes/cheatsheetfaiss"
-        },
-        {
-            "category": "Notes",
-            "title": "Cheatsheet @ Chroma",
-            "url": "https://codeadeel.github.io/notes/cheatsheetchroma"
         }
     ],
     "engineering": [
+        {
+            "category": "Engineering",
+            "title": "HA Milvus on Linux VMs Without Kubernetes",
+            "url": "https://codeadeel.github.io/engineering/milvusonprem"
+        },
         {
             "category": "Engineering",
             "title": "SQL Query Engine",
