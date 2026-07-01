@@ -2,6 +2,11 @@
     "mainPage": [
         {
             "category": "Engineering",
+            "title": "Small Vision-Language Models Failures",
+            "url": "https://codeadeel.github.io/engineering/pointfailbenchmark"
+        },
+        {
+            "category": "Engineering",
             "title": "HA Milvus on Linux VMs Without Kubernetes",
             "url": "https://codeadeel.github.io/engineering/milvusonprem"
         },
@@ -19,14 +24,14 @@
             "category": "Engineering",
             "title": "Integrating React.js with HugoPages",
             "url": "https://codeadeel.github.io/engineering/reactwithhugo"
-        },
-        {
-            "category": "Notes",
-            "title": "Cheatsheet @ Faiss",
-            "url": "https://codeadeel.github.io/notes/cheatsheetfaiss"
         }
     ],
     "engineering": [
+        {
+            "category": "Engineering",
+            "title": "Small Vision-Language Models Failures",
+            "url": "https://codeadeel.github.io/engineering/pointfailbenchmark"
+        },
         {
             "category": "Engineering",
             "title": "HA Milvus on Linux VMs Without Kubernetes",
@@ -46,11 +51,6 @@
             "category": "Engineering",
             "title": "QR Code Scanner with Camera and Flashlight in React.js",
             "url": "https://codeadeel.github.io/engineering/qrbrowserflashcamera"
-        },
-        {
-            "category": "Engineering",
-            "title": "Integrating React.js with HugoPages",
-            "url": "https://codeadeel.github.io/engineering/reactwithhugo"
         }
     ],
     "notes": [
