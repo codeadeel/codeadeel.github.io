@@ -14,7 +14,7 @@ The usual way to evaluate a pointing model is a single number: how often its poi
 
 [pointfail](https://github.com/codeadeel/pointfail) is a small study and toolkit built around that gap. It evaluates four small, open vision-language models on three pointing benchmarks, and it sorts every miss into one of four failure modes, so the result is not just how often each model is right, but how it tends to be wrong.
 
-This post walks through the idea, the design, and what the numbers say.
+This post walks through the idea, the methodology, and what the numbers say.
 
 ## Why the kind of failure matters
 
@@ -29,15 +29,27 @@ pointfail makes the distinction explicit with a four-bucket taxonomy:
 | `wrong_category` | Wrong object category. |
 | `hallucinated` | A point placed where no valid target exists. |
 
-The buckets run from least to most severe. A model whose misses cluster in `off_by_pixels` is degrading gracefully: it found the right thing and was slightly off. A model whose misses are mostly `hallucinated` is not locating the target at all. That difference is the whole point of the study.
+The buckets run from least to most severe, and the ordering reflects recoverability. A model whose misses cluster in `off_by_pixels` found the right thing and was slightly off; a small spatial tolerance recovers most of those. A model whose misses are mostly `hallucinated` is not locating the target at all. That difference is the whole point of the study.
 
-## The shape of the pipeline
+## Methodology
 
-Evaluation runs in two stages: a geometric first pass that is exact and fully local, then a judge that explains the misses.
+### Task and outcomes
+
+Each benchmark sample consists of an image, a natural-language instruction, and a binary ground-truth mask marking the acceptable target region. The evaluated model produces free-form text from the image and instruction; a family-specific parser extracts zero or more points, normalized to the unit square. The first extracted point is taken as the primary prediction, and each sample resolves to exactly one outcome:
+
+| Outcome | Condition |
+|---|---|
+| `hit` | The primary point falls inside the ground-truth mask. |
+| `miss` | A point was parsed but falls outside the mask. |
+| `no_prediction` | No point could be parsed from the output. |
+
+The hit test is a pixel lookup, so the primary metric involves no model judgment.
+
+### The two-stage protocol
 
 ```mermaid
 flowchart LR
-    I["image + instruction"] --> M["local model points"]
+    I["image + instruction"] --> M["evaluated model points"]
     M --> C{"point in mask?"}
     C -->|yes| H["hit"]
     C -->|"no (parsed)"| MISS["miss"]
@@ -46,23 +58,21 @@ flowchart LR
     J --> B["off_by_pixels / wrong_instance / wrong_category / hallucinated"]
 ```
 
-**Stage 1: geometry.** Each model is shown an image and an instruction and returns one or more points. Every benchmark ships a ground-truth mask marking the correct region, so scoring is a pixel test: the point is a *hit* if it lands inside the mask, a *miss* if it lands outside, and a *no_prediction* if nothing parseable came back. No model grades this; it is arithmetic.
+**Stage 1 (geometric).** Prompts are constructed per model family: benchmark-supplied answer-format directives are removed, and the core instruction is wrapped in the phrasing that elicits each family's native output format (point tags for Molmo, a grounding template for InternVL3, an explicit pixel-coordinate request for Qwen2.5-VL). Parsing follows each family's coordinate convention (0 to 100 for Molmo, box centers on a 0 to 1000 scale for InternVL3, absolute pixels for Qwen2.5-VL). Scoring is the mask lookup defined above.
 
-**Stage 2: classification.** A miss on its own is just a number. To turn it into a *kind*, pointfail renders the image with the target region tinted and the model's point marked, and asks an independent judge which of the four failure modes it is. Giving the judge the same visual evidence a human reviewer would use is deliberate.
+**Stage 2 (semantic).** Each miss is rendered as an annotated image: the ground-truth region tinted, the predicted point marked. The annotated image and the original instruction are presented to a judge model, which must select exactly one taxonomy label. The judge may abstain when no single label fits; abstentions are reported rather than forced into a bucket.
 
-## The judge
+### The judge
 
-The judge is Gemma 4 in its 32B variant, served through Ollama. It is chosen to sit **outside the family of every evaluated model** (none of Molmo, Qwen, or InternVL is a Gemma model), so no model ends up grading work that resembles its own. The judge only ever sees misses; hits and no-predictions never reach it. Classification calls are independent per sample, so they run concurrently, and the judge is never loaded onto the evaluation machine.
+The judge is Gemma 4 in its 32B variant, accessed through Ollama. Two design constraints motivate the choice. First, the judge is out-of-family: none of the evaluated models is a Gemma derivative, so no model is graded by a system that shares its training lineage or output habits. Second, the judge sees only misses. Hits and unparseable outputs never reach it, so the headline hit rate is unaffected by any judge bias or error. If you distrust the judge entirely, the hit / miss / no-prediction numbers still stand on their own. Classification requests are independent per sample and are issued concurrently; the judge is never resident on the evaluation machine.
 
-This split, exact geometry for the primary metric and a model only for the softer *why*, keeps the headline hit rate free of any judge bias. If you distrust the judge entirely, the hit / miss / no-prediction numbers still stand on their own.
+### One model at a time
 
-## One model at a time
-
-The four models don't share an environment. The Molmo family and InternVL3 want one `transformers` version; Qwen2.5-VL wants a newer one. Rather than fight that, pointfail runs **each model in its own subprocess and interpreter**:
+The evaluated models require mutually incompatible dependency sets (the Molmo family and InternVL3 target one `transformers` release line; Qwen2.5-VL requires a newer one). Each model therefore runs in its own subprocess and interpreter:
 
 ```mermaid
 flowchart LR
-    R["ModelRunner (parent, no torch)"] -->|spawn per model| W["worker subprocess"]
+    R["parent runner (no torch)"] -->|spawn per model| W["worker subprocess"]
     W --> L["load model in its interpreter"]
     L --> I["infer on samples"]
     I --> O["return predictions (JSON)"]
@@ -70,7 +80,7 @@ flowchart LR
     X -->|next model| R
 ```
 
-The parent process imports nothing heavy: it hands a worker its requests as JSON and reads back the predictions. When the worker exits, the operating system reclaims all of its memory before the next model loads. Only one model is ever resident, each in exactly the environment that can load it, and a run can share a machine with other work without stepping on it.
+The parent process performs no model inference: it dispatches requests as JSON and collects predictions. Exactly one model is resident at any time, the operating system reclaims all model memory when each worker exits, and every model loads in exactly the environment that can run it.
 
 ## Running it
 
@@ -115,11 +125,7 @@ Reading the two together:
 - **InternVL3-2B** and **MolmoE-1B** are weak everywhere, and their misses are dominated by `hallucinated`: when they are wrong, they are usually pointing at nothing in particular. That is a more dangerous failure than being slightly off.
 - **RefSpatial-Bench** is the most discriminating of the three. It pulls the field apart (Molmo-7B-D at 46.9% against roughly 1 to 3% for the two weakest), which makes it the most useful benchmark for telling these models apart.
 
-The practical reading: hit rate alone is a weak way to pick a model. If a small tolerance is acceptable, Molmo-7B-D's near-misses are often recoverable; a model that mostly hallucinates gives you nothing to recover from.
-
-## A measurement detail worth knowing
-
-The four bucket counts don't always add up to the miss count. The judge is allowed to return no clean label on a genuinely ambiguous case, and those misses stay uncounted rather than being forced into a bucket. The generated results table surfaces this directly, with a `miss` column alongside the four buckets, so the gap is visible rather than hidden. Qwen on Point-Bench, for instance, has 382 misses of which 303 carry a clean label. Honest bookkeeping beats a table that silently sums to a tidy total.
+The practical reading: hit rate alone is a weak way to pick a model. If a small tolerance is acceptable, Molmo-7B-D's near-misses are often recoverable; a model that mostly hallucinates gives you nothing to recover from. (One bookkeeping note: the judge may decline a label on genuinely ambiguous misses, so bucket counts can sum to slightly less than the miss count; the repository's results table shows that gap explicitly.)
 
 ## What this isn't
 
@@ -134,6 +140,17 @@ It is also small by design. The pipeline is a handful of readable modules: coord
 ## Conclusion
 
 For pointing models, *how* a model fails is often as important as how often. A single accuracy number flattens that away; a failure taxonomy brings it back. pointfail is a compact, reproducible way to measure both: geometry for the rate, an out-of-family judge for the kind. The result is a per-model profile you can actually make a deployment decision from.
+
+The study in numbers:
+
+| | |
+|---|--:|
+| Models evaluated | 4 |
+| Benchmarks | 3 |
+| Pointing attempts scored | 5,436 |
+| Misses judged | 3,415 |
+| Misses cleanly classified into the four modes | 3,151 |
+| Overall hit-rate spread | 60.7% (best) to 11.6% (worst) |
 
 The repository is on GitHub at [codeadeel/pointfail](https://github.com/codeadeel/pointfail) under the MIT license, with the full per-sample results, generated tables and figures, documentation, runnable examples, and a reproducibility notebook. Issues, PRs, and feedback are welcome.
 
