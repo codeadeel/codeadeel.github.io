@@ -1,6 +1,10 @@
 ---
 date: '2025-05-07'
 title: 'Integrating React.js with HugoPages: A Comprehensive Guide'
+description: "Mounting React components inside Hugo pages, from build pipeline to deployment."
+banner: "https://storage.googleapis.com/codeadeel-github/Generic/Blogger/reactHugoBanner.png"
+tags: [react, hugo, frontend]
+images: ["https://storage.googleapis.com/codeadeel-github/Generic/Blogger/reactHugoBanner.png"]
 ---
 
 ![Banner Art](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/reactHugoBanner.png)

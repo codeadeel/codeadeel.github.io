@@ -3,6 +3,10 @@ layout: post
 title: "Picasso MCP — Self-Hosted Image Generation for Your AI Coding Assistant"
 date: 2026-03-26
 tags: [mcp, ai, docker, self-hosted, image-generation, gemini]
+description: "A self-hosted MCP server that gives AI coding assistants image generation. One command."
+banner: "https://storage.googleapis.com/codeadeel-github/Generic/Blogger/picasso-mcp-cover.png"
+tags: [mcp, image-generation, tooling]
+images: ["https://storage.googleapis.com/codeadeel-github/Generic/Blogger/picasso-mcp-cover.png"]
 ---
 
 ![Picasso MCP Cover](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/picasso-mcp-cover.png)

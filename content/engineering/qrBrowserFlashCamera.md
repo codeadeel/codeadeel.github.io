@@ -1,6 +1,8 @@
 ---
 date: '2025-05-12'
 title: 'Building a QR Code Scanner with Browser Camera and Flashlight Support Using React.js'
+description: "A browser QR scanner in React with camera and flashlight support, fully client-side."
+tags: [react, browser, frontend]
 ---
 
 <div style="display: flex; justify-content: center; align-items: center; height: 100%;">

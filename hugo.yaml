@@ -1,5 +1,7 @@
 # Hugo configuration file
 title: codeadeel
+baseURL: https://codeadeel.github.io/
+enableRobotsTXT: true
 
 # import hextra as module
 module:
@@ -11,6 +13,14 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+
+    # pass LaTeX through to KaTeX untouched (block: $$ / \[ \], inline: \( \))
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
 
   # enable hextra syntax highlight
   highlight:
@@ -65,8 +75,8 @@ params:
 
   theme:
     # light | dark | system
-    default: light
-    displayToggle: false
+    default: system
+    displayToggle: true
   
   page:
     # full (100%), wide (90rem), normal (1280px)

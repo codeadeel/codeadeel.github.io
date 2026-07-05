@@ -1,6 +1,10 @@
 ---
 date: 2025-09-09
 title: "FastAPI: Building Modern APIs with Python"
+description: "FastAPI essentials: routing, validation, and building a clean modern API in Python."
+banner: "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+tags: [python, api]
+images: ["https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"]
 ---
 
 ![fastAPILogo](https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png)

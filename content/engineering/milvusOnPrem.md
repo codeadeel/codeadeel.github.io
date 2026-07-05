@@ -2,6 +2,10 @@
 date: 2026-05-02
 title: "HA Milvus on Linux VMs Without Kubernetes"
 breadcrumbs: false
+description: "High-availability Milvus across plain Linux VMs with Docker Compose. No Kubernetes."
+banner: "https://storage.googleapis.com/codeadeel-github/Generic/Blogger/milvus-onprem-banner.png"
+tags: [vector-database, infrastructure, docker]
+images: ["https://storage.googleapis.com/codeadeel-github/Generic/Blogger/milvus-onprem-banner.png"]
 ---
 
 ![bannerArt](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/milvus-onprem-banner.png)

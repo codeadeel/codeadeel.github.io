@@ -3,6 +3,10 @@ layout: post
 title: "SQL Query Engine — Natural Language to PostgreSQL via a Self-Healing LLM Pipeline"
 date: 2026-04-07
 tags: [fastapi, llm, postgresql, redis, docker, openai, natural-language, sql, openwebui, self-hosted]
+description: "Natural language to PostgreSQL through a self-healing LLM pipeline."
+banner: "https://storage.googleapis.com/codeadeel-github/Generic/Blogger/sqlqueryenginecover.png"
+tags: [llm, postgresql, pipelines]
+images: ["https://storage.googleapis.com/codeadeel-github/Generic/Blogger/sqlqueryenginecover.png"]
 ---
 ![SQL Query Engine Cover](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/sqlqueryenginecover.png)
 # SQL Query Engine

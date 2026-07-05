@@ -1,6 +1,10 @@
 ---
 date: 2025-08-24
 title: "ChromaDB: Open-Source Vector Database"
+description: "A working reference for ChromaDB: collections, queries, filters, and persistence."
+banner: "https://storage.googleapis.com/codeadeel-github/Generic/Blogger/chromaArchitecture.webp"
+tags: [vector-database, embeddings]
+images: ["https://storage.googleapis.com/codeadeel-github/Generic/Blogger/chromaArchitecture.webp"]
 ---
 
 ![chromaArchitecture](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/chromaArchitecture.webp)

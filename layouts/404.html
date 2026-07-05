@@ -1,0 +1,27 @@
+{{ define "main" }}
+<div class="hx-mx-auto hx-flex hx-min-h-[calc(100vh-var(--navbar-height))] hx-items-center hx-justify-center">
+  <div style="text-align: center; padding: 2rem; max-width: 36rem;">
+    <h1 id="e404" title="click me" style="font-size: 4rem; font-weight: 700; margin: 0 0 1rem; cursor: pointer; user-select: none;">404</h1>
+    <p style="opacity: .75; margin: 0 0 .5rem;">This page appears to be hallucinated. Happens to the best of us models.</p>
+    <p id="e404-line" style="opacity: .55; font-size: .9rem; min-height: 1.4em; margin: 0 0 1.75rem;"></p>
+    <a href="/" style="display: inline-block; padding: .6rem 1.4rem; border: 1px solid rgba(128,128,128,.4); border-radius: 8px; text-decoration: none; font-weight: 600;">Take me somewhere real</a>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var lines = [
+    "I'm confident this page exists. I'm often confident.",
+    "As a static site, I cannot browse the internet for you.",
+    "Have you tried asking more politely? Works on chatbots.",
+    "temperature=2.0 was a mistake.",
+    "My training data ends right before this URL.",
+    "This is a feature. The feature is humility."
+  ];
+  var i = -1;
+  var el = document.getElementById("e404-line");
+  var next = function () { i = (i + 1) % lines.length; el.textContent = lines[i]; };
+  document.getElementById("e404").addEventListener("click", next);
+  el.textContent = "(psst: click the 404)";
+});
+</script>
+{{ end }}

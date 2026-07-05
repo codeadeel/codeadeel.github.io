@@ -2,6 +2,10 @@
 date: 2025-09-03
 title: "Remote Desktop on Google Cloud Platform"
 breadcrumbs: false
+description: "A GNOME remote desktop on GCP spot VMs with xrdp, at a fraction of the cost."
+banner: "https://storage.googleapis.com/codeadeel-github/Generic/Blogger/xrdpgnomedesktop/bannerArt.jpg"
+tags: [gcp, cloud, remote-desktop]
+images: ["https://storage.googleapis.com/codeadeel-github/Generic/Blogger/xrdpgnomedesktop/bannerArt.jpg"]
 ---
 
 ![bannerArt](https://storage.googleapis.com/codeadeel-github/Generic/Blogger/xrdpgnomedesktop/bannerArt.jpg)

@@ -1,0 +1,53 @@
+{{- /*
+  postcards: a responsive card grid of posts.
+
+  Usage:
+    {{< postcards >}}                                 on a section _index: that section, with tag chips
+    {{< postcards section="engineering" limit="6" >}} anywhere: a named section
+    {{< postcards recent="6" >}}                      latest posts across the whole site (no chips)
+
+  Cards use each post's front matter: title, description, banner, tags, date.
+  Styles and behavior live in partials/custom/head-end.html.
+*/ -}}
+{{- $pages := .Page.RegularPages -}}
+{{- $chips := true -}}
+{{- with .Get "section" -}}
+  {{- with site.GetPage (printf "/%s" .) -}}{{- $pages = .RegularPages -}}{{- end -}}
+{{- end -}}
+{{- with .Get "recent" -}}
+  {{- $pages = where site.RegularPages "Section" "in" (slice "engineering" "notes" "blog") -}}
+  {{- $chips = false -}}
+{{- end -}}
+{{- $pages = $pages.ByDate.Reverse -}}
+{{- with .Get "limit" -}}{{- $pages = first (int .) $pages -}}{{- end -}}
+{{- with .Get "recent" -}}{{- $pages = first (int .) $pages -}}{{- end -}}
+
+{{- if $chips -}}
+{{- $tags := slice -}}
+{{- range $pages }}{{ range .Params.tags }}{{ $tags = $tags | append . }}{{ end }}{{ end -}}
+{{- $tags = $tags | uniq | sort -}}
+{{- if gt (len $tags) 1 }}
+<div class="pc-chips">
+  {{- range $tags }}
+  <button class="pc-chip" data-tag="{{ . }}">{{ . }}</button>
+  {{- end }}
+</div>
+{{- end -}}
+{{- end }}
+
+<div class="pc-grid">
+{{- range $pages }}
+  <a class="pc-card" href="{{ .RelPermalink }}" data-tags="{{ delimit (.Params.tags | default slice) "," }}">
+    {{- with .Params.banner }}
+    <div class="pc-image" style="background-image: url('{{ . }}');"></div>
+    {{- end }}
+    <div class="pc-body">
+      <div class="pc-meta">{{ .Section | title }} · {{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min</div>
+      <div class="pc-title">{{ .Title }}</div>
+      {{- with .Params.description }}
+      <div class="pc-desc">{{ . }}</div>
+      {{- end }}
+    </div>
+  </a>
+{{- end }}
+</div>

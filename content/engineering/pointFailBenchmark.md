@@ -3,6 +3,10 @@ date: 2026-07-01
 title: "How Small Vision-Language Models Fail at Pointing"
 breadcrumbs: false
 math: true
+description: "Four small open vision-language models, three pointing benchmarks, and a taxonomy of how they miss."
+banner: "https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/examples_grid.png"
+tags: [vlm, evaluation, benchmarks]
+images: ["https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/examples_grid.png"]
 ---
 
 ![bannerArt](https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/examples_grid.png)
@@ -103,15 +107,15 @@ The parent process performs no model inference: it dispatches requests as JSON a
 
 ### Computing the metrics
 
-All reported numbers derive from the per-sample records by plain counting. Formally, for a model $m$ on a benchmark $b$ with $n_{m,b}$ samples:
+All reported numbers derive from the per-sample records by plain counting. Formally, for a model \(m\) on a benchmark \(b\) with \(n_{m,b}\) samples:
 
-**Scoring a single prediction.** The parsed primary point $p = (p_x, p_y) \in [0,1]^2$ is tested against the binary ground-truth mask $M$ of an image of width $W$ and height $H$:
+**Scoring a single prediction.** The parsed primary point \(p = (p_x, p_y) \in [0,1]^2\) is tested against the binary ground-truth mask \(M\) of an image of width \(W\) and height \(H\):
 
 $$
 \mathrm{hit}(p) \;=\; \mathbb{1}\big[\, M(\lfloor p_y H \rfloor,\ \lfloor p_x W \rfloor) = 1 \,\big]
 $$
 
-A sample with no parseable point is a $\mathrm{noPred}$, and everything else that is not a hit is a miss:
+A sample with no parseable point is a \(\mathrm{noPred}\), and everything else that is not a hit is a miss:
 
 $$
 \mathrm{miss}_{m,b} \;=\; n_{m,b} - \mathrm{hits}_{m,b} - \mathrm{noPred}_{m,b}
@@ -123,20 +127,20 @@ $$
 \mathrm{hitRate}_{m,b} \;=\; \frac{\mathrm{hits}_{m,b}}{n_{m,b}}
 $$
 
-**Overall.** The pooled rate sums raw counts across the three benchmarks ($\sum_b n_{m,b} = 1359$ per model) rather than averaging the three percentages, so larger benchmarks carry proportionally more weight:
+**Overall.** The pooled rate sums raw counts across the three benchmarks (\(\sum_b n_{m,b} = 1359\) per model) rather than averaging the three percentages, so larger benchmarks carry proportionally more weight:
 
 $$
 \mathrm{overall}_{m} \;=\; \frac{\sum_b \mathrm{hits}_{m,b}}{\sum_b n_{m,b}}
 \;\;\neq\;\; \frac{1}{3}\sum_b \mathrm{hitRate}_{m,b}
 $$
 
-**Failure composition.** With $c_{m,b}(k)$ the number of misses the judge cleanly labeled with mode $k \in \{$`off_by_pixels`, `wrong_instance`, `wrong_category`, `hallucinated`$\}$, the share of each mode is computed over labeled misses only:
+**Failure composition.** With \(c_{m,b}(k)\) the number of misses the judge cleanly labeled with mode \(k\) (one of `off_by_pixels`, `wrong_instance`, `wrong_category`, `hallucinated`), the share of each mode is computed over labeled misses only:
 
 $$
 \mathrm{share}_{m,b}(k) \;=\; \frac{c_{m,b}(k)}{\sum_{k'} c_{m,b}(k')}
 $$
 
-Judge abstentions, $\mathrm{miss}_{m,b} - \sum_k c_{m,b}(k)$, are counted and reported separately, never redistributed into the modes, which is why bucket counts can sum to slightly less than the miss count.
+Judge abstentions, \(\mathrm{miss}_{m,b} - \sum_k c_{m,b}(k)\), are counted and reported separately, never redistributed into the modes, which is why bucket counts can sum to slightly less than the miss count.
 
 Aggregation is deterministic: rerunning it over the same records reproduces the published tables byte for byte, and since the records themselves are in the repository, every number in this post can be recomputed independently.
 
@@ -170,11 +174,92 @@ Four models (Molmo-7B-D, MolmoE-1B, Qwen2.5-VL-3B, InternVL3-2B) across Point-Be
 | InternVL3-2B | 15.7 | 17.0 | 1.1 |
 | MolmoE-1B | 14.3 | 10.0 | 2.5 |
 
-![Hit rate by model and benchmark](https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/hit_rate.png)
+<div id="pf-hit-chart" style="width: 100%; height: 380px; margin: 1rem 0;"></div>
+<noscript><img src="https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/hit_rate.png" alt="Hit rate by model and benchmark"></noscript>
 
-The rate is only half the story. The failure profile is the other half:
+The rate is only half the story. The failure profile is the other half. Hover any bar for exact counts, or click a legend entry to isolate a failure mode:
 
-![Failure-bucket composition](https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/failure_buckets.png)
+<div id="pf-bucket-chart" style="width: 100%; height: 420px; margin: 1rem 0;"></div>
+<noscript><img src="https://raw.githubusercontent.com/codeadeel/pointfail/main/results/figures/failure_buckets.png" alt="Failure-bucket composition"></noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof echarts === "undefined") return;
+  var dark = document.documentElement.classList.contains("dark");
+  var ink = dark ? "#d4d4d8" : "#3f3f46";
+  var models = ["Molmo-7B-D", "Qwen2.5-VL-3B", "InternVL3-2B", "MolmoE-1B"];
+  var benches = ["Point-Bench", "Where2Place", "RefSpatial-Bench"];
+  var hits = {
+    "Point-Bench": [68.3, 38.6, 15.7, 14.3],
+    "Where2Place": [24.0, 25.0, 17.0, 10.0],
+    "RefSpatial-Bench": [46.9, 25.6, 1.1, 2.5]
+  };
+  // per model x benchmark: [off_by_pixels, wrong_instance, wrong_category, hallucinated]
+  var buckets = {
+    "Molmo-7B-D":    { "Point-Bench": [30,69,51,80],   "Where2Place": [1,0,22,32],  "RefSpatial-Bench": [25,31,46,45] },
+    "Qwen2.5-VL-3B": { "Point-Bench": [62,60,68,113],  "Where2Place": [1,1,37,35],  "RefSpatial-Bench": [16,46,101,42] },
+    "InternVL3-2B":  { "Point-Bench": [49,62,200,432], "Where2Place": [0,3,35,45],  "RefSpatial-Bench": [10,28,79,157] },
+    "MolmoE-1B":     { "Point-Bench": [28,63,169,433], "Where2Place": [0,0,19,57],  "RefSpatial-Bench": [4,16,81,167] }
+  };
+  var modeNames = ["off_by_pixels", "wrong_instance", "wrong_category", "hallucinated"];
+  var modeColors = ["#4c9f70", "#e0a52e", "#cc7a33", "#b23b3b"];
+
+  var hitEl = document.getElementById("pf-hit-chart");
+  if (hitEl) {
+    var hitChart = echarts.init(hitEl);
+    hitChart.setOption({
+      textStyle: { color: ink },
+      tooltip: { trigger: "axis", valueFormatter: function (v) { return v + "%"; } },
+      legend: { data: benches, textStyle: { color: ink } },
+      grid: { left: 45, right: 15, top: 40, bottom: 30 },
+      xAxis: { type: "category", data: models, axisLabel: { color: ink } },
+      yAxis: { type: "value", max: 100, name: "hit rate (%)", axisLabel: { color: ink } },
+      series: benches.map(function (b) {
+        return { name: b, type: "bar", data: hits[b], emphasis: { focus: "series" } };
+      })
+    });
+    window.addEventListener("resize", function () { hitChart.resize(); });
+  }
+
+  var bucketEl = document.getElementById("pf-bucket-chart");
+  if (bucketEl) {
+    var cells = [];
+    models.forEach(function (m) { benches.forEach(function (b) { cells.push([m, b]); }); });
+    var bucketChart = echarts.init(bucketEl);
+    bucketChart.setOption({
+      textStyle: { color: ink },
+      tooltip: {
+        trigger: "axis", axisPointer: { type: "shadow" },
+        formatter: function (params) {
+          var total = params.reduce(function (s, p) { return s + p.value; }, 0);
+          var lines = params[0].name + ": " + total + " labeled misses";
+          params.forEach(function (p) {
+            lines += "<br/>" + p.marker + p.seriesName + ": " + p.value +
+                     " (" + (total ? (100 * p.value / total).toFixed(1) : 0) + "%)";
+          });
+          return lines;
+        }
+      },
+      legend: { data: modeNames, textStyle: { color: ink } },
+      grid: { left: 45, right: 15, top: 40, bottom: 85 },
+      xAxis: {
+        type: "category",
+        data: cells.map(function (c) { return c[0] + " · " + c[1]; }),
+        axisLabel: { color: ink, rotate: 35, fontSize: 10 }
+      },
+      yAxis: { type: "value", name: "labeled misses", axisLabel: { color: ink } },
+      series: modeNames.map(function (mode, i) {
+        return {
+          name: mode, type: "bar", stack: "misses", itemStyle: { color: modeColors[i] },
+          data: cells.map(function (c) { return buckets[c[0]][c[1]][i]; })
+        };
+      })
+    });
+    window.addEventListener("resize", function () { bucketChart.resize(); });
+  }
+});
+</script>
 
 Reading the two together:
 
@@ -201,7 +286,7 @@ For pointing models, *how* a model fails is often as important as how often. A s
 
 The study in numbers:
 
-| | |
+| Metric | Value |
 |---|--:|
 | Models evaluated | 4 |
 | Benchmarks | 3 |

@@ -1,6 +1,10 @@
 ---
 date: 2025-08-19
 title: "Faiss: Efficient Vector Similarity Search"
+description: "A working reference for Faiss: index types, trade-offs, and the code to use them."
+banner: "https://engineering.fb.com/wp-content/uploads/2017/03/GOcmDQEFmV52jukHAAAAAAAqO6pvbj0JAAAB.jpg"
+tags: [vector-database, similarity-search]
+images: ["https://engineering.fb.com/wp-content/uploads/2017/03/GOcmDQEFmV52jukHAAAAAAAqO6pvbj0JAAAB.jpg"]
 ---
 
 ![Banner Art](https://engineering.fb.com/wp-content/uploads/2017/03/GOcmDQEFmV52jukHAAAAAAAqO6pvbj0JAAAB.jpg)
