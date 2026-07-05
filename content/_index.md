@@ -9,7 +9,3 @@ Welcome to my little corner of the internet! I love exploring the intersection o
 ## Recent writing
 
 {{< postcards recent="6" >}}
-
-<div style="margin-top: 0.5rem;">
-Everything, by section: <a href="/engineering">Engineering</a> · <a href="/notes">Notes</a> · <a href="/blog">Blog</a>
-</div>
