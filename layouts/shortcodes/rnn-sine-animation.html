@@ -1,0 +1,188 @@
+<link rel="stylesheet" href="{{ "css/rnn-sine-animation.css" | relURL }}">
+
+<div class="rnn-live" data-rnn-live tabindex="0">
+  <div class="rnn-live__header">
+    <div>
+      <div class="rnn-live__eyebrow">Interactive model microscope</div>
+      <div class="rnn-live__title">Follow a sine wave through every RNN operation</div>
+      <div class="rnn-live__dimensions">
+        B=5 batch · T=10 samples · F=1 input · H=4 hidden · C=2 classes
+      </div>
+    </div>
+  </div>
+
+  <div class="rnn-live__sticky-toolbar">
+    <div class="rnn-live__toolbar-main">
+      <div class="rnn-live__status" data-rnn-status aria-live="polite"></div>
+      <div class="rnn-live__controls" role="group" aria-label="Animation controls">
+        <button type="button" data-rnn-action="reset">Reset</button>
+        <button type="button" data-rnn-action="previous">Previous</button>
+        <button
+          type="button"
+          class="rnn-live__primary"
+          data-rnn-action="play"
+          aria-pressed="false"
+        >Play</button>
+        <button type="button" data-rnn-action="next">Next</button>
+        <label>
+          Speed
+          <select data-rnn-speed>
+            <option value="1600">Slow</option>
+            <option value="950" selected>Normal</option>
+            <option value="450">Fast</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="rnn-live__progress" aria-hidden="true">
+      <div data-rnn-progress></div>
+    </div>
+
+    <div
+      class="rnn-live__toolbar-tabs"
+      role="tablist"
+      aria-label="Simulator controls"
+    >
+      <button
+        type="button"
+        class="is-current"
+        role="tab"
+        aria-selected="true"
+        aria-controls="rnn-toolbar-steps"
+        data-rnn-toolbar-tab="steps"
+      >Steps</button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="rnn-toolbar-flow"
+        data-rnn-toolbar-tab="flow"
+      >Flow</button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="rnn-toolbar-trace"
+        data-rnn-toolbar-tab="trace"
+      >Trace</button>
+    </div>
+
+    <div
+      class="rnn-live__toolbar-panel"
+      id="rnn-toolbar-steps"
+      role="tabpanel"
+      data-rnn-toolbar-panel="steps"
+    >
+      <div class="rnn-live__navigator">
+        <div class="rnn-live__nav-row">
+          <span class="rnn-live__nav-label">Jump to timestep</span>
+          <div
+            class="rnn-live__timeline"
+            data-rnn-timeline
+            role="group"
+            aria-label="Choose a timestep"
+          ></div>
+        </div>
+
+        <div class="rnn-live__nav-row">
+          <span class="rnn-live__nav-label">Operation inside the cell</span>
+          <div
+            class="rnn-live__stage-nav"
+            data-rnn-stage-nav
+            role="group"
+            aria-label="Choose an RNN operation"
+          ></div>
+        </div>
+
+        <label class="rnn-live__scrubber-label">
+          Scrub all 41 operations
+          <input
+            type="range"
+            min="0"
+            max="40"
+            value="0"
+            step="1"
+            data-rnn-scrubber
+            aria-label="Animation operation"
+          >
+        </label>
+      </div>
+    </div>
+
+    <div
+      class="rnn-live__toolbar-panel"
+      id="rnn-toolbar-flow"
+      role="tabpanel"
+      data-rnn-toolbar-panel="flow"
+      hidden
+    >
+      <div class="rnn-live__pipeline" data-rnn-pipeline></div>
+    </div>
+
+    <div
+      class="rnn-live__toolbar-panel"
+      id="rnn-toolbar-trace"
+      role="tabpanel"
+      data-rnn-toolbar-panel="trace"
+      hidden
+    >
+      <div class="rnn-live__focus-panel">
+        <div>
+          <span class="rnn-live__focus-label">Trace one batch row</span>
+          <div
+            class="rnn-live__picker"
+            data-rnn-signal-picker
+            role="group"
+            aria-label="Choose a signal"
+          ></div>
+        </div>
+        <div>
+          <span class="rnn-live__focus-label">Inspect one hidden feature</span>
+          <div
+            class="rnn-live__picker"
+            data-rnn-feature-picker
+            role="group"
+            aria-label="Choose a hidden feature"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rnn-live__signals" data-rnn-signals></div>
+
+  <section class="rnn-live__calculation-workspace">
+    <div class="rnn-live__section-heading">
+      Live matrix calculation
+      <span>The toolbar stays visible while you step through the operations.</span>
+    </div>
+    <div class="rnn-live__matrices" data-rnn-matrices></div>
+    <div class="rnn-live__result" data-rnn-result hidden></div>
+  </section>
+
+  <section class="rnn-live__explanation-section">
+    <div class="rnn-live__section-heading">
+      Current operation explained
+      <span>The matrix view above shows the same calculation for all five signals.</span>
+    </div>
+    <div class="rnn-live__explanation-grid">
+      <div class="rnn-live__equation" data-rnn-equation></div>
+      <div class="rnn-live__inspector" data-rnn-inspector></div>
+    </div>
+  </section>
+
+  <p class="rnn-live__keyboard-hint">
+    Tip: click a signal, timestep, or stage. With this panel focused, use ← and →
+    to step, Home to reset, End to classify, and Space to play.
+  </p>
+
+  <noscript>
+    <p>
+      This walkthrough needs JavaScript. The static rule is:
+      <code>h_t = tanh(x_t W_x + h_(t-1) W_h + b)</code>.
+    </p>
+  </noscript>
+</div>
+
+<script src="{{ "js/rnn-sine-animation.js" | relURL }}" defer></script>
