@@ -1,0 +1,245 @@
+<link rel="stylesheet" href="{{ "css/rnn-sentence-animation.css" | relURL }}">
+
+<div class="sentence-rnn-shell" data-sentence-rnn-shell>
+  <div class="sentence-rnn" data-sentence-rnn tabindex="0">
+    <header class="sentence-rnn__header">
+      <div class="sentence-rnn__header-copy">
+        <div class="sentence-rnn__eyebrow">Interactive sentence classifier</div>
+        <h3 class="sentence-rnn__title">Follow three sentences through a simple RNN</h3>
+        <p class="sentence-rnn__subtitle">
+          Scratch arithmetic for intuition; the same tensor layout used by
+          <code>nn.Embedding</code>, <code>nn.RNN</code>, and <code>nn.Linear</code>.
+        </p>
+        <div class="sentence-rnn__dimensions">
+          B=3 sentences · T=5 positions · E=3 embedding · H=4 hidden · C=2 classes
+        </div>
+      </div>
+      <button
+        type="button"
+        class="sentence-rnn__close"
+        data-sentence-rnn-fullscreen-close
+        aria-label="Close full-screen simulator"
+        hidden
+      >
+        <span aria-hidden="true">×</span>
+        Close
+      </button>
+    </header>
+
+    <section class="sentence-rnn__launch-panel" aria-label="Simulator preview">
+      <div class="sentence-rnn__launch-copy">
+        <strong>Inspect the complete sentence-classification pipeline</strong>
+        <p>
+          A focused workspace keeps the batch, tensor calculations, and plain-English
+          explanation visible together across all 34 operations.
+        </p>
+        <div class="sentence-rnn__launch-facts" aria-label="Simulator scope">
+          <span>34 guided operations</span>
+          <span>3 sentences</span>
+          <span>5 recurrent steps</span>
+        </div>
+      </div>
+      <div class="sentence-rnn__launch-flow" aria-hidden="true">
+        <span>Text</span><b>→</b>
+        <span>Token IDs</span><b>→</b>
+        <span>Embedding</span><b>→</b>
+        <span>RNN memory</span><b>→</b>
+        <span>Sentiment</span>
+      </div>
+      <button
+        type="button"
+        class="sentence-rnn__launch-button"
+        data-sentence-rnn-fullscreen-open
+        aria-haspopup="dialog"
+        aria-expanded="false"
+      >
+        <span aria-hidden="true">↗</span>
+        Open full-screen simulator
+      </button>
+    </section>
+
+    <div class="sentence-rnn__interactive">
+      <div class="sentence-rnn__sticky">
+        <div class="sentence-rnn__toolbar-main">
+          <div class="sentence-rnn__status" data-sentence-rnn-status aria-live="polite"></div>
+
+          <div class="sentence-rnn__controls" role="group" aria-label="Animation controls">
+            <button type="button" data-sentence-rnn-action="reset">Reset</button>
+            <button type="button" data-sentence-rnn-action="previous">Previous</button>
+            <button
+              type="button"
+              class="sentence-rnn__primary"
+              data-sentence-rnn-action="play"
+              aria-pressed="false"
+            >Play</button>
+            <button type="button" data-sentence-rnn-action="next">Next</button>
+            <label>
+              Speed
+              <select data-sentence-rnn-speed>
+                <option value="1700">Slow</option>
+                <option value="1000" selected>Normal</option>
+                <option value="500">Fast</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="sentence-rnn__progress" aria-hidden="true">
+          <div data-sentence-rnn-progress></div>
+        </div>
+
+        <div class="sentence-rnn__tabs" role="tablist" aria-label="Simulator navigation">
+          <button
+            type="button"
+            class="is-current"
+            role="tab"
+            aria-selected="true"
+            data-sentence-rnn-tab="journey"
+          >Journey</button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-sentence-rnn-tab="cell"
+          >RNN cell</button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-sentence-rnn-tab="trace"
+          >Trace</button>
+        </div>
+
+        <div
+          class="sentence-rnn__tab-panel"
+          role="tabpanel"
+          data-sentence-rnn-panel="journey"
+        >
+          <div
+            class="sentence-rnn__stage-nav"
+            data-sentence-rnn-stage-nav
+            role="group"
+            aria-label="Jump to a pipeline stage"
+          ></div>
+          <label class="sentence-rnn__scrubber-label">
+            Scrub all operations
+            <input
+              type="range"
+              min="0"
+              max="33"
+              value="0"
+              step="1"
+              data-sentence-rnn-scrubber
+              aria-label="Current simulator operation"
+            >
+          </label>
+        </div>
+
+        <div
+          class="sentence-rnn__tab-panel"
+          role="tabpanel"
+          data-sentence-rnn-panel="cell"
+          hidden
+        >
+          <div class="sentence-rnn__nav-row">
+            <span>Choose timestep</span>
+            <div
+              class="sentence-rnn__timestep-nav"
+              data-sentence-rnn-timestep-nav
+              role="group"
+              aria-label="Choose an RNN timestep"
+            ></div>
+          </div>
+          <div class="sentence-rnn__nav-row">
+            <span>Operation inside the cell</span>
+            <div
+              class="sentence-rnn__operation-nav"
+              data-sentence-rnn-operation-nav
+              role="group"
+              aria-label="Choose an operation inside the RNN cell"
+            ></div>
+          </div>
+        </div>
+
+        <div
+          class="sentence-rnn__tab-panel"
+          role="tabpanel"
+          data-sentence-rnn-panel="trace"
+          hidden
+        >
+          <div class="sentence-rnn__trace-grid">
+            <div>
+              <span>Trace one sentence</span>
+              <div
+                class="sentence-rnn__sentence-picker"
+                data-sentence-rnn-sentence-picker
+                role="group"
+                aria-label="Choose a sentence"
+              ></div>
+            </div>
+            <div>
+              <span>Inspect one hidden feature</span>
+              <div
+                class="sentence-rnn__feature-picker"
+                data-sentence-rnn-feature-picker
+                role="group"
+                aria-label="Choose a hidden feature"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sentence-rnn__content">
+        <section class="sentence-rnn__batch-board" aria-label="Sentence batch">
+          <div class="sentence-rnn__section-heading">
+            <span>Batch moving through the pipeline</span>
+            <small>Blue marks the selected sentence; purple marks the current position.</small>
+          </div>
+          <div data-sentence-rnn-batch></div>
+        </section>
+
+        <section class="sentence-rnn__workspace">
+          <div class="sentence-rnn__section-heading">
+            <span>Live tensor calculation</span>
+            <small>Every number below comes from the fixed illustrative parameters.</small>
+          </div>
+          <div class="sentence-rnn__matrices" data-sentence-rnn-matrices></div>
+          <div class="sentence-rnn__metrics" data-sentence-rnn-metrics hidden></div>
+        </section>
+
+        <section class="sentence-rnn__explanation">
+          <div class="sentence-rnn__section-heading">
+            <span>What this operation means</span>
+            <small>The scalar trace is one cell inside the full batch calculation.</small>
+          </div>
+          <div class="sentence-rnn__explanation-grid">
+            <div class="sentence-rnn__plain" data-sentence-rnn-explanation></div>
+            <div class="sentence-rnn__inspector" data-sentence-rnn-inspector></div>
+          </div>
+        </section>
+
+        <aside class="sentence-rnn__honesty">
+          This is a deterministic teaching model. Its small weights and embeddings are
+          fixed in the browser so every calculation can be inspected; it is not training
+          live and it is not a useful sentiment model.
+        </aside>
+      </div>
+
+      <p class="sentence-rnn__keyboard-hint">
+        Keyboard: use ←/→ to step, Home to reset, End for metrics, Space to play or
+        pause, and Escape to close full-screen mode. Arrow keys also move between
+        toolbar tabs.
+      </p>
+
+      <noscript>
+        <p>
+          This walkthrough needs JavaScript. The recurrent rule is
+          <code>h_t = tanh(x_t W_ihᵀ + b_ih + h_(t-1) W_hhᵀ + b_hh)</code>.
+        </p>
+      </noscript>
+    </div>
+  </div>
+</div>
+
+<script src="{{ "js/rnn-sentence-animation.js" | relURL }}" defer></script>
