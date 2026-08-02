@@ -1,0 +1,255 @@
+<link rel="stylesheet" href="{{ "css/lstm-next-word-animation.css" | relURL }}">
+
+<div class="nextword-lstm-shell" data-nextword-lstm-shell>
+  <div class="nextword-lstm" data-nextword-lstm tabindex="0">
+    <header class="nextword-lstm__header">
+      <div class="nextword-lstm__header-copy">
+        <div class="nextword-lstm__eyebrow">Interactive next-word predictor</div>
+        <h3 class="nextword-lstm__title">Open an LSTM cell and follow every gate</h3>
+        <p class="nextword-lstm__subtitle">
+          Exact <code>nn.LSTM</code> arithmetic, from shifted word targets to
+          masked next-token loss.
+        </p>
+        <div class="nextword-lstm__dimensions">
+          B=3 sequences · T=4 positions · E=3 embedding · H=4 hidden · V=14 words
+        </div>
+      </div>
+      <button
+        type="button"
+        class="nextword-lstm__close"
+        data-nextword-lstm-fullscreen-close
+        aria-label="Close full-screen simulator"
+        hidden
+      >
+        <span aria-hidden="true">×</span>
+        Close
+      </button>
+    </header>
+
+    <section class="nextword-lstm__launch-panel" aria-label="Simulator preview">
+      <div class="nextword-lstm__launch-copy">
+        <strong>Inspect the complete next-word prediction pipeline</strong>
+        <p>
+          The full-screen workspace keeps the token batch, four LSTM gates,
+          cell memory, hidden state, vocabulary scores, and explanation together.
+        </p>
+        <div class="nextword-lstm__launch-facts" aria-label="Simulator scope">
+          <span>39 guided operations</span>
+          <span>3 sequences</span>
+          <span>4 recurrent steps</span>
+          <span>4 gates</span>
+        </div>
+      </div>
+      <div class="nextword-lstm__launch-flow" aria-hidden="true">
+        <span>Words</span><b>→</b>
+        <span>Shifted targets</span><b>→</b>
+        <span>LSTM gates</span><b>→</b>
+        <span>Cell memory</span><b>→</b>
+        <span>Next word</span>
+      </div>
+      <button
+        type="button"
+        class="nextword-lstm__launch-button"
+        data-nextword-lstm-fullscreen-open
+        aria-haspopup="dialog"
+        aria-expanded="false"
+      >
+        <span aria-hidden="true">↗</span>
+        Open full-screen simulator
+      </button>
+    </section>
+
+    <div class="nextword-lstm__interactive">
+      <div class="nextword-lstm__sticky">
+        <div class="nextword-lstm__toolbar-main">
+          <div class="nextword-lstm__status" data-nextword-lstm-status aria-live="polite"></div>
+
+          <div class="nextword-lstm__controls" role="group" aria-label="Animation controls">
+            <button type="button" data-nextword-lstm-action="reset">Reset</button>
+            <button type="button" data-nextword-lstm-action="previous">Previous</button>
+            <button
+              type="button"
+              class="nextword-lstm__primary"
+              data-nextword-lstm-action="play"
+              aria-pressed="false"
+            >Play</button>
+            <button type="button" data-nextword-lstm-action="next">Next</button>
+            <label>
+              Speed
+              <select data-nextword-lstm-speed>
+                <option value="1900">Slow</option>
+                <option value="1100" selected>Normal</option>
+                <option value="550">Fast</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="nextword-lstm__progress" aria-hidden="true">
+          <div data-nextword-lstm-progress></div>
+        </div>
+
+        <div class="nextword-lstm__tabs" role="tablist" aria-label="Simulator navigation">
+          <button
+            type="button"
+            class="is-current"
+            role="tab"
+            aria-selected="true"
+            data-nextword-lstm-tab="journey"
+          >Journey</button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-nextword-lstm-tab="cell"
+          >LSTM cell</button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-nextword-lstm-tab="trace"
+          >Trace</button>
+        </div>
+
+        <div
+          class="nextword-lstm__tab-panel"
+          role="tabpanel"
+          data-nextword-lstm-panel="journey"
+        >
+          <div
+            class="nextword-lstm__stage-nav"
+            data-nextword-lstm-stage-nav
+            role="group"
+            aria-label="Jump to a pipeline stage"
+          ></div>
+          <label class="nextword-lstm__scrubber-label">
+            Scrub all operations
+            <input
+              type="range"
+              min="0"
+              max="38"
+              value="0"
+              step="1"
+              data-nextword-lstm-scrubber
+              aria-label="Current simulator operation"
+            >
+          </label>
+        </div>
+
+        <div
+          class="nextword-lstm__tab-panel"
+          role="tabpanel"
+          data-nextword-lstm-panel="cell"
+          hidden
+        >
+          <div class="nextword-lstm__nav-row">
+            <span>Choose timestep</span>
+            <div
+              class="nextword-lstm__timestep-nav"
+              data-nextword-lstm-timestep-nav
+              role="group"
+              aria-label="Choose an LSTM timestep"
+            ></div>
+          </div>
+          <div class="nextword-lstm__nav-row">
+            <span>Operation inside the cell</span>
+            <div
+              class="nextword-lstm__operation-nav"
+              data-nextword-lstm-operation-nav
+              role="group"
+              aria-label="Choose an operation inside the LSTM cell"
+            ></div>
+          </div>
+        </div>
+
+        <div
+          class="nextword-lstm__tab-panel"
+          role="tabpanel"
+          data-nextword-lstm-panel="trace"
+          hidden
+        >
+          <div class="nextword-lstm__trace-grid">
+            <div>
+              <span>Trace one sequence</span>
+              <div
+                class="nextword-lstm__sentence-picker"
+                data-nextword-lstm-sentence-picker
+                role="group"
+                aria-label="Choose a sequence"
+              ></div>
+            </div>
+            <div>
+              <span>Inspect one feature</span>
+              <div
+                class="nextword-lstm__feature-picker"
+                data-nextword-lstm-feature-picker
+                role="group"
+                aria-label="Choose a hidden feature"
+              ></div>
+            </div>
+            <div>
+              <span>Highlight one gate</span>
+              <div
+                class="nextword-lstm__gate-picker"
+                data-nextword-lstm-gate-picker
+                role="group"
+                aria-label="Choose an LSTM gate"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nextword-lstm__content">
+        <section class="nextword-lstm__batch-board" aria-label="Sequence batch">
+          <div class="nextword-lstm__section-heading">
+            <span>Three sequences moving through time</span>
+            <small>The arrow under each input points to its expected next token.</small>
+          </div>
+          <div data-nextword-lstm-batch></div>
+        </section>
+
+        <section class="nextword-lstm__workspace">
+          <div class="nextword-lstm__section-heading">
+            <span>Live tensor calculation</span>
+            <small>Every displayed value comes from the embedded PyTorch-trained parameters.</small>
+          </div>
+          <div class="nextword-lstm__cell-map" data-nextword-lstm-cell-map></div>
+          <div class="nextword-lstm__matrices" data-nextword-lstm-matrices></div>
+          <div class="nextword-lstm__metrics" data-nextword-lstm-metrics hidden></div>
+        </section>
+
+        <section class="nextword-lstm__explanation">
+          <div class="nextword-lstm__section-heading">
+            <span>What this operation means</span>
+            <small>The scalar trace follows one feature in one sequence.</small>
+          </div>
+          <div class="nextword-lstm__explanation-grid">
+            <div class="nextword-lstm__plain" data-nextword-lstm-explanation></div>
+            <div class="nextword-lstm__inspector" data-nextword-lstm-inspector></div>
+          </div>
+        </section>
+
+        <aside class="nextword-lstm__honesty">
+          This deterministic teaching model uses parameters copied from a tiny trained
+          PyTorch network. The browser performs the same forward equations; no training
+          happens inside the page.
+        </aside>
+      </div>
+
+      <p class="nextword-lstm__keyboard-hint">
+        Keyboard: ←/→ steps, Home resets, End opens metrics, Space plays or pauses,
+        and Escape closes full-screen mode. Arrow keys also move between toolbar tabs.
+      </p>
+
+      <noscript>
+        <p>
+          JavaScript is required for this walkthrough. PyTorch gate order is
+          <code>i, f, g, o</code>; cell memory and hidden state are updated separately.
+        </p>
+      </noscript>
+    </div>
+  </div>
+</div>
+
+<script src="{{ "js/lstm-next-word-animation.js" | relURL }}" defer></script>
