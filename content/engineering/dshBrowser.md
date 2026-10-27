@@ -3,6 +3,7 @@ date: 2026-10-26
 title: "dsh-browser: A Live Browser Your DeepSeek Agent Shares With You"
 breadcrumbs: false
 description: "One Chromium per DSH session that the agent and the human share — live panel, ranked search, and takeover when needed."
+banner: "https://raw.githubusercontent.com/codeadeel/dsh-browser/main/docs/demo/banner.jpg"
 tags: [deepseek, ai-agents, browser, mcp, docker]
 ---
 
